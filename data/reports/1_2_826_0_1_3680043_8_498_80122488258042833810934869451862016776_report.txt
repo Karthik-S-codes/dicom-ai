@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T06:06:54.181886Z
+Patient ID: PATIENT_707
+Scan Type: MRI
+Transfer Status: SUCCESS
+Latency: 919.75 ms
+Retry Count: 0
+Risk Level: HIGH_RISK
+Diagnosis: Ligament Tear detected
+Model Confidence: 83.50%
+
+Detection Coordinates: x=285, y=166, w=150, h=99
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for Ligament Tear detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Findings suggest possible ligament tear. Radiologist review advised.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

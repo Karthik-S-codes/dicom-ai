@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T06:13:29.764788Z
+Patient ID: PATIENT_553
+Scan Type: XRAY
+Transfer Status: SUCCESS
+Latency: 2660.75 ms
+Retry Count: 0
+Risk Level: HIGH_RISK
+Diagnosis: Lung Cancer detected
+Model Confidence: 78.01%
+
+Detection Coordinates: x=286, y=32, w=113, h=135
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for Lung Cancer detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Findings suggest possible lung cancer. Radiologist review advised.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

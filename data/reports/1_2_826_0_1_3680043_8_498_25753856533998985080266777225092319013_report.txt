@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T06:50:27.782776Z
+Patient ID: PATIENT_611
+Scan Type: XRAY
+Transfer Status: SUCCESS
+Latency: 1569.12 ms
+Retry Count: 0
+Risk Level: HIGH_RISK
+Diagnosis: Bone fracture detected
+Model Confidence: 87.30%
+
+Detection Coordinates: x=91, y=248, w=115, h=101
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for Bone fracture detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Possible fracture pattern observed
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

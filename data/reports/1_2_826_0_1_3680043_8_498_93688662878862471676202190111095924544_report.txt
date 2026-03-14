@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T05:29:05.033473Z
+Patient ID: PATIENT_183
+Scan Type: CT
+Transfer Status: SUCCESS
+Latency: 2229.57 ms
+Retry Count: 0
+Risk Level: HIGH_RISK
+Diagnosis: Pneumonia detected
+Model Confidence: 76.84%
+
+Detection Coordinates: x=191, y=237, w=129, h=120
+
+AI Interpretation: OpenCV highlighted suspicious region for Pneumonia detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Pulmonary infection pattern observed
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

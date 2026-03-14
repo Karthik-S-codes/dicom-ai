@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T07:31:40.658516Z
+Patient ID: PATIENT_992
+Scan Type: MRI
+Transfer Status: SUCCESS
+Latency: 989.87 ms
+Retry Count: 0
+Risk Level: HIGH_RISK
+Diagnosis: Spinal disc abnormality detected
+Model Confidence: 86.62%
+
+Detection Coordinates: x=72, y=61, w=133, h=156
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for Spinal disc abnormality detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Disc-space abnormality pattern observed.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

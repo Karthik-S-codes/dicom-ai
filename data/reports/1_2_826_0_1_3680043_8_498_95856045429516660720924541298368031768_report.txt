@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T06:47:20.211954Z
+Patient ID: PATIENT_616
+Scan Type: XRAY
+Transfer Status: SUCCESS
+Latency: 84.18 ms
+Retry Count: 0
+Risk Level: HIGH_RISK
+Diagnosis: Pneumonia detected
+Model Confidence: 93.33%
+
+Detection Coordinates: x=226, y=312, w=169, h=155
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for Pneumonia detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Pulmonary infection pattern observed
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

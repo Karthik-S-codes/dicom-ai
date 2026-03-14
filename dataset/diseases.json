@@ -1,0 +1,86 @@
+[
+  {
+    "file": "normal_1.png",
+    "disease": "Normal Scan",
+    "risk": "LOW_RISK",
+    "confidence_min": 0.88,
+    "confidence_max": 0.96
+  },
+  {
+    "file": "normal_2.png",
+    "disease": "Normal Scan",
+    "risk": "LOW_RISK",
+    "confidence_min": 0.87,
+    "confidence_max": 0.95
+  },
+  {
+    "file": "pneumonia_1.png",
+    "disease": "Pneumonia Detected",
+    "risk": "HIGH_RISK",
+    "confidence_min": 0.72,
+    "confidence_max": 0.89
+  },
+  {
+    "file": "pneumonia_2.png",
+    "disease": "Pneumonia Detected",
+    "risk": "HIGH_RISK",
+    "confidence_min": 0.74,
+    "confidence_max": 0.91
+  },
+  {
+    "file": "fracture_1.png",
+    "disease": "Bone Fracture Detected",
+    "risk": "HIGH_RISK",
+    "confidence_min": 0.80,
+    "confidence_max": 0.94
+  },
+  {
+    "file": "fracture_2.png",
+    "disease": "Bone Fracture Detected",
+    "risk": "HIGH_RISK",
+    "confidence_min": 0.78,
+    "confidence_max": 0.93
+  },
+  {
+    "file": "tumor_1.png",
+    "disease": "Suspicious Tumor Mass",
+    "risk": "HIGH_RISK",
+    "confidence_min": 0.70,
+    "confidence_max": 0.85
+  },
+  {
+    "file": "tumor_2.png",
+    "disease": "Suspicious Tumor Mass",
+    "risk": "HIGH_RISK",
+    "confidence_min": 0.71,
+    "confidence_max": 0.87
+  },
+  {
+    "file": "covid_1.png",
+    "disease": "COVID-like Pulmonary Pattern",
+    "risk": "MEDIUM_RISK",
+    "confidence_min": 0.69,
+    "confidence_max": 0.86
+  },
+  {
+    "file": "covid_2.png",
+    "disease": "COVID-like Pulmonary Pattern",
+    "risk": "MEDIUM_RISK",
+    "confidence_min": 0.71,
+    "confidence_max": 0.88
+  },
+  {
+    "file": "brain_tumor_1.png",
+    "disease": "Possible Brain Tumor",
+    "risk": "HIGH_RISK",
+    "confidence_min": 0.73,
+    "confidence_max": 0.90
+  },
+  {
+    "file": "brain_tumor_2.png",
+    "disease": "Possible Brain Tumor",
+    "risk": "HIGH_RISK",
+    "confidence_min": 0.75,
+    "confidence_max": 0.91
+  }
+]

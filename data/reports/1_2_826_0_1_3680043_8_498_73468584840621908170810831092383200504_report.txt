@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T05:30:45.341958Z
+Patient ID: PATIENT_652
+Scan Type: CT
+Transfer Status: SUCCESS
+Latency: 2405.33 ms
+Retry Count: 0
+Risk Level: HIGH_RISK
+Diagnosis: Suspicious finding detected
+Model Confidence: 87.13%
+
+Detection Coordinates: x=112, y=211, w=169, h=152
+
+AI Interpretation: OpenCV highlighted suspicious region for Suspicious finding detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Radiologist review advised
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

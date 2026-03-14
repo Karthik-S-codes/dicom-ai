@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T05:27:44.201295Z
+Patient ID: PATIENT_323
+Scan Type: CT
+Transfer Status: SUCCESS
+Latency: 225.96 ms
+Retry Count: 0
+Risk Level: HIGH_RISK
+Diagnosis: Bone fracture detected
+Model Confidence: 92.33%
+
+Detection Coordinates: x=155, y=29, w=107, h=114
+
+AI Interpretation: OpenCV highlighted suspicious region for Bone fracture detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Possible fracture pattern observed
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T06:47:52.986833Z
+Patient ID: PATIENT_205
+Scan Type: XRAY
+Transfer Status: SUCCESS
+Latency: 1459.76 ms
+Retry Count: 1
+Risk Level: HIGH_RISK
+Diagnosis: Tuberculosis pattern detected
+Model Confidence: 82.85%
+
+Detection Coordinates: x=97, y=124, w=125, h=112
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for Tuberculosis pattern detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Pulmonary TB-like pattern observed. Infectious disease review advised.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

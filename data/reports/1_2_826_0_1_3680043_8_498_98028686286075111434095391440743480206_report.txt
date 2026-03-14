@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T05:29:56.828368Z
+Patient ID: PATIENT_715
+Scan Type: CT
+Transfer Status: SUCCESS
+Latency: 794.76 ms
+Retry Count: 0
+Risk Level: LOW_RISK
+Diagnosis: Normal Scan
+Model Confidence: 90.36%
+
+Detection Coordinates: x=47, y=77, w=119, h=141
+
+AI Interpretation: OpenCV highlighted suspicious region for Normal Scan.
+Impression: Classification suggests no significant abnormality.
+Recommendation: No abnormal findings detected
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

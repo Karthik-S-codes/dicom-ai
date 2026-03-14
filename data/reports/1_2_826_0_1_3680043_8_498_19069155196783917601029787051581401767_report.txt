@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T05:13:48.964664Z
+Patient ID: PATIENT_622
+Scan Type: CT
+Transfer Status: SUCCESS
+Latency: 512.52 ms
+Retry Count: 0
+Risk Level: LOW_RISK
+Diagnosis: Normal Chest X-ray
+Model Confidence: 59.02%
+
+Detection Coordinates: N/A
+
+AI Interpretation: AI model identified features consistent with normal chest X-ray embeddings.
+Impression: Classification suggests no significant abnormality.
+Recommendation: No abnormal findings detected
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

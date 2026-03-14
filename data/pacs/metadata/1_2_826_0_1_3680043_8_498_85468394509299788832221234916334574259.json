@@ -1,0 +1,8 @@
+{
+  "sop_uid": "1.2.826.0.1.3680043.8.498.85468394509299788832221234916334574259",
+  "patient_id": "PATIENT_369",
+  "dicom_path": "C:\\Users\\Karthik\\OneDrive\\Desktop\\PES_Hack\\dicom-ai-system\\data\\pacs\\1_2_826_0_1_3680043_8_498_85468394509299788832221234916334574259.dcm",
+  "latency_ms": 601.56,
+  "retry_count": 1,
+  "received_at": "2026-03-14T08:13:59.139698Z"
+}

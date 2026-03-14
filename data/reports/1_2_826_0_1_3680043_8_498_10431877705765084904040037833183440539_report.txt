@@ -1,0 +1,8 @@
+DICOM-AI Preliminary Report
+Generated: 2026-03-13T16:50:03.089219Z
+Patient ID: PATIENT_001
+Model Confidence: 72.15%
+
+Impression: Potential abnormality detected in the highlighted region.
+Recommendation: Recommend radiologist review and correlation with clinical findings.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

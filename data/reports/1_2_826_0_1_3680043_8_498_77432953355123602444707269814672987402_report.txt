@@ -1,0 +1,13 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-13T19:40:28.725489Z
+Patient ID: PATIENT_671
+Scan Type: CT
+Transfer Status: SUCCESS
+Latency: 944.32 ms
+Retry Count: 0
+Diagnosis: Potential abnormal lesion detected
+Model Confidence: 61.91%
+
+Impression: Potential abnormality detected in highlighted region.
+Recommendation: Urgent radiologist review recommended.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

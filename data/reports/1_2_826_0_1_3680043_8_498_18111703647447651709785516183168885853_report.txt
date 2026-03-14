@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T05:08:59.257088Z
+Patient ID: PATIENT_867
+Scan Type: CT
+Transfer Status: SUCCESS
+Latency: 1819.72 ms
+Retry Count: 0
+Risk Level: LOW_RISK
+Diagnosis: No significant abnormality detected
+Model Confidence: 58.72%
+
+Detection Coordinates: N/A
+
+AI Interpretation: AI model inference completed
+Impression: Classification suggests no significant abnormality.
+Recommendation: Routine radiologist verification advised.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

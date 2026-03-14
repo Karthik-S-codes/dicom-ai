@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-03-14T06:29:40.239366Z
+Patient ID: PATIENT_909
+Scan Type: CT
+Transfer Status: SUCCESS
+Latency: 1739.03 ms
+Retry Count: 0
+Risk Level: HIGH_RISK
+Diagnosis: Kidney stone detected
+Model Confidence: 83.54%
+
+Detection Coordinates: x=16, y=71, w=157, h=160
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for Kidney stone detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Possible renal calculus pattern observed.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.
