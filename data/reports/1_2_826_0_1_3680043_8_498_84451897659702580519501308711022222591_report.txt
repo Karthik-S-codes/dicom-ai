@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-05-02T12:49:27.336341Z
+Patient ID: PATIENT_128
+Scan Type: XRAY
+Transfer Status: SUCCESS
+Latency: 938.11 ms
+Retry Count: 1
+Risk Level: LOW_RISK
+Diagnosis: No abnormality detected
+Model Confidence: 90.42%
+
+Detection Coordinates: x=38, y=339, w=114, h=105
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for No abnormality detected.
+Impression: Classification suggests no significant abnormality.
+Recommendation: No abnormal findings detected
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

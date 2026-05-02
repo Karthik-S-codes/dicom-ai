@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import AppLayout from './components/AppLayout';
 import About from './pages/About';
 import Analytics from './pages/Analytics';
@@ -9,14 +9,30 @@ import PatientStudies from './pages/PatientStudies';
 import Reports from './pages/Reports';
 import Simulation from './pages/Simulation';
 import StudyViewer from './pages/StudyViewer';
+import { isAuthenticated } from './services/auth';
+
+function RequireAuth({ children }) {
+  const location = useLocation();
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+  return children;
+}
 
 function App() {
   return (
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Routes>
         <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route element={<AppLayout />}>
+        <Route
+          element={(
+            <RequireAuth>
+              <AppLayout />
+            </RequireAuth>
+          )}
+        >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/simulation" element={<Simulation />} />
           <Route path="/studies" element={<PatientStudies />} />
@@ -24,7 +40,6 @@ function App() {
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>

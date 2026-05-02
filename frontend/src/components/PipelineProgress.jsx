@@ -11,7 +11,7 @@ const STAGES = [
 
 function PipelineProgress({ currentStage, isRunning = false }) {
   const totalStages = STAGES.length;
-  const clampedStage = Math.min(Math.max(currentStage, 1), totalStages);
+  const clampedStage = Math.min(Math.max(currentStage, 0), totalStages);
   const progressWidth = `${(clampedStage / totalStages) * 100}%`;
 
   return (
@@ -29,7 +29,7 @@ function PipelineProgress({ currentStage, isRunning = false }) {
             state = 'done';
           } else if (stageNo < clampedStage) {
             state = 'done';
-          } else if (stageNo === clampedStage) {
+          } else if (stageNo === clampedStage && clampedStage > 0) {
             state = 'active';
           }
 

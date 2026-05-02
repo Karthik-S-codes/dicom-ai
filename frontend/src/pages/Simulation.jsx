@@ -34,10 +34,10 @@ function Simulation() {
   const [error, setError] = useState('');
   const [result, setResult] = useState(null);
   const [showDetectionOverlay, setShowDetectionOverlay] = useState(true);
-  const [currentStage, setCurrentStage] = useState(1);
+  const [currentStage, setCurrentStage] = useState(0);
   const [isPipelineRunning, setIsPipelineRunning] = useState(false);
   const stageTimerRef = useRef(null);
-  const currentStageRef = useRef(1);
+  const currentStageRef = useRef(0);
   const isCancelledRef = useRef(false);
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { FiActivity, FiBarChart2, FiCheckCircle, FiCpu, FiFileText, FiServer } from 'react-icons/fi';
+import { isAuthenticated } from '../services/auth';
 
 const features = [
   { icon: FiActivity, title: 'DICOM Transfer Monitoring', text: 'Real-time transfer telemetry with latency and reliability signals.' },
@@ -11,6 +12,9 @@ const features = [
 ];
 
 function Home() {
+  const authed = isAuthenticated();
+  const guardedRoute = (path) => (authed ? path : '/login?intent=signin');
+
   return (
     <main className="home-page">
       <header className="home-navbar panel">
@@ -20,23 +24,37 @@ function Home() {
         </div>
         <nav className="home-nav-links">
           <NavLink to="/home" className={({ isActive }) => `home-nav-pill ${isActive ? 'active' : ''}`}>Home</NavLink>
-          <NavLink to="/dashboard" className={({ isActive }) => `home-nav-pill ${isActive ? 'active' : ''}`}>Dashboard</NavLink>
-          <NavLink to="/simulation" className={({ isActive }) => `home-nav-pill ${isActive ? 'active' : ''}`}>Simulation</NavLink>
-          <NavLink to="/analytics" className={({ isActive }) => `home-nav-pill ${isActive ? 'active' : ''}`}>Analytics</NavLink>
-          <NavLink to="/reports" className={({ isActive }) => `home-nav-pill ${isActive ? 'active' : ''}`}>Reports</NavLink>
+          <NavLink to={guardedRoute('/dashboard')} className="home-nav-pill">Dashboard</NavLink>
+          <NavLink to={guardedRoute('/simulation')} className="home-nav-pill">Simulation</NavLink>
+          <NavLink to={guardedRoute('/analytics')} className="home-nav-pill">Analytics</NavLink>
+          <NavLink to={guardedRoute('/reports')} className="home-nav-pill">Reports</NavLink>
           <NavLink to="/about" className={({ isActive }) => `home-nav-pill ${isActive ? 'active' : ''}`}>About</NavLink>
-          <Link to="/login" className="home-login-pill">Login</Link>
+          <Link to={authed ? '/dashboard' : '/login?intent=signin'} className="home-login-pill">
+            {authed ? 'Workspace' : 'Sign In'}
+          </Link>
         </nav>
       </header>
 
       <section className="hero panel home-hero">
-        <div className="hero-chip">Hackathon Demo • Full-Stack AI Platform</div>
+        <div className="hero-chip">Hospital Workflow Suite • Secure Clinical Demo</div>
         <h1>DICOM-AI Medical Imaging Intelligence Platform</h1>
-        <p className="hero-subtitle">AI-powered monitoring and analysis for medical imaging transfer systems</p>
+        <p className="hero-subtitle">
+          A hospital-style imaging environment that simulates CT generation, DICOM transfer,
+          AI triage, PACS storage, and clinical reporting.
+        </p>
         <div className="hero-actions">
-          <Link to="/simulation" className="btn-link">Start Simulation</Link>
-          <Link to="/dashboard" className="btn-link secondary">View Dashboard</Link>
+          <Link to={guardedRoute('/simulation')} className="btn-link">
+            {authed ? 'Start Simulation' : 'Sign In to Start'}
+          </Link>
+          <Link to={authed ? '/dashboard' : '/login?intent=signup'} className="btn-link secondary">
+            {authed ? 'Go to Dashboard' : 'Create Account'}
+          </Link>
         </div>
+        {!authed && (
+          <p className="hero-note">
+            Try the simulation by signing up or logging in. You will be guided to the login page.
+          </p>
+        )}
         <div className="hero-stats">
           <article><span>8</span><p>Workflow Stages</p></article>
           <article><span>AI</span><p>Transfer + Detection Models</p></article>
@@ -44,7 +62,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="panel">
+      <section className="panel home-section">
         <h2>Features</h2>
         <div className="feature-grid">
           {features.map(({ icon: Icon, title, text }) => (
@@ -57,7 +75,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="panel">
+      <section className="panel home-section">
         <h2>About Project</h2>
         <p>
           This platform simulates an end-to-end hospital imaging workflow: CT generation, DICOM transfer,
@@ -72,7 +90,7 @@ function Home() {
         </div>
       </section>
 
-      <footer className="panel footer home-footer">
+      <footer className="panel footer home-footer home-section">
         <div className="footer-col">
           <h3>DICOM-AI Medical Imaging Intelligence Platform</h3>
           <p>AI-powered monitoring and analysis for medical imaging transfer systems.</p>
