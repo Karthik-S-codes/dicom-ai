@@ -13,9 +13,11 @@ const PYTHON_SERVICES_DIR = path.join(ROOT_DIR, 'python-services');
 const DATA_DIR = path.join(ROOT_DIR, 'data');
 const DATASET_DIR = path.join(ROOT_DIR, 'dataset');
 
-const PYTHON_EXECUTABLE =
-  process.env.PYTHON_EXECUTABLE
-  || path.join(ROOT_DIR, '.venv', 'Scripts', 'python.exe');
+const DEFAULT_PYTHON_EXECUTABLE = process.platform === 'win32'
+  ? path.join(ROOT_DIR, '.venv', 'Scripts', 'python.exe')
+  : 'python3';
+
+const PYTHON_EXECUTABLE = process.env.PYTHON_EXECUTABLE || DEFAULT_PYTHON_EXECUTABLE;
 
 const WORKFLOW = {
   scanId: null,

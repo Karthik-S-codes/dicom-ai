@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: dicom-ai-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install && pip3 install -r ../requirements.txt
+    startCommand: node server.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: PYTHON_EXECUTABLE
+        value: python3
