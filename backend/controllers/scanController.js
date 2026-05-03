@@ -18,6 +18,8 @@ const DEFAULT_PYTHON_EXECUTABLE = process.platform === 'win32'
   : 'python3';
 
 const PYTHON_EXECUTABLE = process.env.PYTHON_EXECUTABLE || DEFAULT_PYTHON_EXECUTABLE;
+const PYTHON_RETRY_LIMIT = Number(process.env.PYTHON_RETRY_LIMIT || 2);
+const PYTHON_RETRY_DELAY_MS = Number(process.env.PYTHON_RETRY_DELAY_MS || 1500);
 
 const WORKFLOW = {
   scanId: null,
@@ -193,19 +195,72 @@ function parseJsonFromStdout(stdout) {
   }
 }
 
+function isTransientPythonError(error) {
+  const message = String(error?.message || '').toLowerCase();
+  return [
+    'timeout',
+    'timed out',
+    'temporarily',
+    'connection',
+    'network',
+    'econnreset',
+    'econnrefused',
+    'resource temporarily unavailable'
+  ].some((token) => message.includes(token));
+}
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function runPython(scriptName, args) {
   const scriptPath = path.join(PYTHON_SERVICES_DIR, scriptName);
-  const { stdout, stderr } = await execFileAsync(PYTHON_EXECUTABLE, [scriptPath, ...args], {
-    cwd: PYTHON_SERVICES_DIR,
-    windowsHide: true
-  });
+  try {
+    const { stdout, stderr } = await execFileAsync(PYTHON_EXECUTABLE, [scriptPath, ...args], {
+      cwd: PYTHON_SERVICES_DIR,
+      windowsHide: true
+    });
 
-  if (stderr && stderr.trim()) {
-    // Keep stderr for debugging in API response path when needed.
-    console.warn(`[${scriptName}] stderr: ${stderr}`);
+    if (stderr && stderr.trim()) {
+      // Keep stderr for debugging in API response path when needed.
+      console.warn(`[${scriptName}] stderr: ${stderr}`);
+    }
+
+    return parseJsonFromStdout(stdout);
+  } catch (error) {
+    const stderr = String(error?.stderr || '').trim();
+    const stdout = String(error?.stdout || '').trim();
+    const output = [stderr, stdout].filter(Boolean).join(' | ');
+    const message = output
+      ? `Python script failed: ${scriptName}. ${error.message}. Output: ${output}`
+      : `Python script failed: ${scriptName}. ${error.message}`;
+    const wrapped = new Error(message);
+    wrapped.cause = error;
+    throw wrapped;
+  }
+}
+
+async function runPythonWithRetry(scriptName, args, options = {}) {
+  const retries = Number(options.retries ?? PYTHON_RETRY_LIMIT);
+  const delayMs = Number(options.delayMs ?? PYTHON_RETRY_DELAY_MS);
+  const shouldRetry = options.shouldRetry || isTransientPythonError;
+  let attempt = 0;
+  let lastError = null;
+
+  while (attempt <= retries) {
+    try {
+      return await runPython(scriptName, args);
+    } catch (error) {
+      lastError = error;
+      if (attempt >= retries || !shouldRetry(error)) {
+        throw error;
+      }
+      await delay(delayMs * (attempt + 1));
+      attempt += 1;
+    }
   }
 
-  return parseJsonFromStdout(stdout);
+  throw lastError || new Error(`Python script failed after ${retries + 1} attempts: ${scriptName}`);
 }
 
 function toPublicPath(absolutePath, folderName) {
@@ -245,7 +300,7 @@ const createScan = async (req, res) => {
 const generateScan = async (req, res) => {
   try {
     const patientId = req.body?.patientId || generatePatientId();
-    const result = await runPython('ct_generator.py', [
+    const result = await runPythonWithRetry('ct_generator.py', [
       '--output-dir',
       path.join(DATA_DIR, 'scans'),
       '--patient-id',
@@ -284,23 +339,36 @@ const generateScan = async (req, res) => {
       scanUid: result.scan_uid
     });
   } catch (error) {
-    return res.status(500).json({ message: 'Failed to generate scan', error: error.message });
+    return res.status(500).json({
+      message: 'Failed to generate scan',
+      stage: 'generate-scan',
+      error: error.message
+    });
   }
 };
 
 async function runSimulationPipeline(options = {}) {
   const patientId = options.patientId || generatePatientId();
 
-  const generated = await runPython('ct_generator.py', [
+  const runStage = async (stage, action) => {
+    try {
+      return await action();
+    } catch (error) {
+      error.stage = stage;
+      throw error;
+    }
+  };
+
+  const generated = await runStage('generate-scan', () => runPythonWithRetry('ct_generator.py', [
     '--output-dir',
     path.join(DATA_DIR, 'scans'),
     '--patient-id',
     patientId,
     '--dataset-dir',
     DATASET_DIR
-  ]);
+  ]));
 
-  const transfer = await runPython('dicom_sender.py', [
+  const transfer = await runStage('transfer-dicom', () => runPythonWithRetry('dicom_sender.py', [
     '--dicom',
     generated.dicom_path,
     '--pacs-host',
@@ -309,7 +377,7 @@ async function runSimulationPipeline(options = {}) {
     String(options.pacsPort || 11112),
     '--retry-limit',
     String(options.retryLimit || 4)
-  ]);
+  ]));
 
   const expectedPacsPath = path.join(
     DATA_DIR,
@@ -327,7 +395,7 @@ async function runSimulationPipeline(options = {}) {
     transfer.status === 'SUCCESS' ? generated.dicom_path : ''
   ]) || expectedPacsPath;
 
-  const analysis = await runPython('disease_detection.py', [
+  const analysis = await runStage('analyze-scan', () => runPythonWithRetry('disease_detection.py', [
     '--dicom',
     resolvedPacsPath,
     '--highlighted-dir',
@@ -336,7 +404,7 @@ async function runSimulationPipeline(options = {}) {
     path.join(DATA_DIR, 'original'),
     '--dataset-dir',
     DATASET_DIR
-  ]);
+  ]));
 
   const diagnosis = analysis.diagnosis || 'No significant abnormality detected';
   const recommendation = analysis.recommendation || 'Radiologist review advised.';
@@ -345,7 +413,7 @@ async function runSimulationPipeline(options = {}) {
     ? `x=${analysis.coordinates.x}, y=${analysis.coordinates.y}, w=${analysis.coordinates.width}, h=${analysis.coordinates.height}`
     : 'N/A';
 
-  const report = await runPython('report_generator.py', [
+  const report = await runStage('generate-report', () => runPythonWithRetry('report_generator.py', [
     '--patient-id',
     String(generated.patient_id || patientId),
     '--scan-type',
@@ -376,7 +444,7 @@ async function runSimulationPipeline(options = {}) {
     path.join(DATA_DIR, 'reports'),
     '--scan-uid',
     String(generated.scan_uid)
-  ]);
+  ]));
 
   const record = await createScanRecord({
     patientId: generated.patient_id,
@@ -491,7 +559,11 @@ const startSimulation = async (req, res) => {
       run: result.run
     });
   } catch (error) {
-    return res.status(500).json({ message: 'Failed to run simulation pipeline', error: error.message });
+    return res.status(500).json({
+      message: 'Failed to run simulation pipeline',
+      stage: error.stage || 'unknown',
+      error: error.message
+    });
   }
 };
 
@@ -506,7 +578,7 @@ const startTransfer = async (req, res) => {
     const pacsPort = String(req.body?.pacsPort || 11112);
     const retryLimit = String(req.body?.retryLimit || 4);
 
-    const transfer = await runPython('dicom_sender.py', [
+    const transfer = await runPythonWithRetry('dicom_sender.py', [
       '--dicom',
       dicomPath,
       '--pacs-host',
@@ -600,7 +672,11 @@ const startTransfer = async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).json({ message: 'Failed to start transfer', error: error.message });
+    return res.status(500).json({
+      message: 'Failed to start transfer',
+      stage: 'transfer-dicom',
+      error: error.message
+    });
   }
 };
 
@@ -629,7 +705,7 @@ const analyzeScan = async (_req, res) => {
       });
     }
 
-    const result = await runPython('disease_detection.py', [
+    const result = await runPythonWithRetry('disease_detection.py', [
       '--dicom',
       dicomPath,
       '--highlighted-dir',
@@ -707,7 +783,11 @@ const analyzeScan = async (_req, res) => {
       coordinates: result.coordinates
     });
   } catch (error) {
-    return res.status(500).json({ message: 'Failed to analyze scan', error: error.message });
+    return res.status(500).json({
+      message: 'Failed to analyze scan',
+      stage: 'analyze-scan',
+      error: error.message
+    });
   }
 };
 
@@ -736,7 +816,7 @@ const generateReport = async (_req, res) => {
       ? `x=${scan.coordinates.x}, y=${scan.coordinates.y}, w=${scan.coordinates.width}, h=${scan.coordinates.height}`
       : 'N/A';
 
-    const report = await runPython('report_generator.py', [
+    const report = await runPythonWithRetry('report_generator.py', [
       '--patient-id',
       String(scan.patientId || 'PATIENT_001'),
       '--scan-type',
@@ -821,7 +901,11 @@ const generateReport = async (_req, res) => {
         : null
     });
   } catch (error) {
-    return res.status(500).json({ message: 'Failed to generate report', error: error.message });
+    return res.status(500).json({
+      message: 'Failed to generate report',
+      stage: 'generate-report',
+      error: error.message
+    });
   }
 };
 
