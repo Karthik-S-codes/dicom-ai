@@ -1,6 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
 import { FiActivity, FiBarChart2, FiCheckCircle, FiCpu, FiFileText, FiServer } from 'react-icons/fi';
-import { isAuthenticated } from '../services/auth';
 
 const features = [
   { icon: FiActivity, title: 'DICOM Transfer Monitoring', text: 'Real-time transfer telemetry with latency and reliability signals.' },
@@ -12,9 +11,6 @@ const features = [
 ];
 
 function Home() {
-  const authed = isAuthenticated();
-  const guardedRoute = (path) => (authed ? path : '/login?intent=signin');
-
   return (
     <main className="home-page">
       <header className="home-navbar panel">
@@ -24,13 +20,13 @@ function Home() {
         </div>
         <nav className="home-nav-links">
           <NavLink to="/home" className={({ isActive }) => `home-nav-pill ${isActive ? 'active' : ''}`}>Home</NavLink>
-          <NavLink to={guardedRoute('/dashboard')} className="home-nav-pill">Dashboard</NavLink>
-          <NavLink to={guardedRoute('/simulation')} className="home-nav-pill">Simulation</NavLink>
-          <NavLink to={guardedRoute('/analytics')} className="home-nav-pill">Analytics</NavLink>
-          <NavLink to={guardedRoute('/reports')} className="home-nav-pill">Reports</NavLink>
+          <NavLink to="/dashboard" className="home-nav-pill">Dashboard</NavLink>
+          <NavLink to="/simulation" className="home-nav-pill">Simulation</NavLink>
+          <NavLink to="/analytics" className="home-nav-pill">Analytics</NavLink>
+          <NavLink to="/reports" className="home-nav-pill">Reports</NavLink>
           <NavLink to="/about" className={({ isActive }) => `home-nav-pill ${isActive ? 'active' : ''}`}>About</NavLink>
-          <Link to={authed ? '/dashboard' : '/login?intent=signin'} className="home-login-pill">
-            {authed ? 'Workspace' : 'Sign In'}
+          <Link to="/simulation" className="home-login-pill">
+            Start Simulation
           </Link>
         </nav>
       </header>
@@ -43,18 +39,13 @@ function Home() {
           AI triage, PACS storage, and clinical reporting.
         </p>
         <div className="hero-actions">
-          <Link to={guardedRoute('/simulation')} className="btn-link">
-            {authed ? 'Start Simulation' : 'Sign In to Start'}
+          <Link to="/simulation" className="btn-link">
+            Start Simulation
           </Link>
-          <Link to={authed ? '/dashboard' : '/login?intent=signup'} className="btn-link secondary">
-            {authed ? 'Go to Dashboard' : 'Create Account'}
+          <Link to="/dashboard" className="btn-link secondary">
+            Go to Dashboard
           </Link>
         </div>
-        {!authed && (
-          <p className="hero-note">
-            Try the simulation by signing up or logging in. You will be guided to the login page.
-          </p>
-        )}
         <div className="hero-stats">
           <article><span>8</span><p>Workflow Stages</p></article>
           <article><span>AI</span><p>Transfer + Detection Models</p></article>
