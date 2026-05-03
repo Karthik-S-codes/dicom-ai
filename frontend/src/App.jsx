@@ -14,7 +14,9 @@ import { isAuthenticated } from './services/auth';
 function RequireAuth({ children }) {
   const location = useLocation();
   if (!isAuthenticated()) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+    // Redirect to login and indicate intent so the login page can surface signup/signin UI
+    const redirectTo = `/login?intent=signin`;
+    return <Navigate to={redirectTo} replace state={{ from: location }} />;
   }
   return children;
 }

@@ -29,15 +29,14 @@ function Login() {
   const loginIntent = useMemo(() => new URLSearchParams(location.search).get('intent'), [location.search]);
 
   useEffect(() => {
-    if (!loginIntent) {
-      navigate('/home', { replace: true });
-      return;
-    }
-
-    if (loginIntent === 'signup') {
-      setMode('signup');
-    } else {
-      setMode('login');
+    // If an intent is provided in the query string, respect it (e.g. ?intent=signup)
+    // Otherwise allow direct access to the login page (do not redirect to /home).
+    if (loginIntent) {
+      if (loginIntent === 'signup') {
+        setMode('signup');
+      } else {
+        setMode('login');
+      }
     }
   }, [loginIntent, navigate]);
 

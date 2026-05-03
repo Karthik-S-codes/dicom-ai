@@ -8,7 +8,8 @@ import {
   FiHome,
   FiInfo,
   FiLogOut,
-  FiMenu
+  FiMenu,
+  FiX
 } from 'react-icons/fi';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { clearAuth, isAuthenticated } from '../services/auth';
@@ -25,24 +26,42 @@ const navItems = [
 
 function AppLayout() {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const authed = isAuthenticated();
 
   return (
-    <div className={`layout ${collapsed ? 'collapsed' : ''}`}>
+    <div className={`layout ${collapsed ? 'collapsed' : ''} ${mobileMenuOpen ? 'mobile-menu-open' : ''}`}>
       <aside className="sidebar">
-        <button type="button" className="icon-btn" onClick={() => setCollapsed((v) => !v)}>
-          <FiMenu />
-        </button>
-        <NavLink to="/home" className="brand-link">
-          <h2 className="brand">DICOM-AI</h2>
-        </NavLink>
+        <div className="sidebar-header">
+          <button type="button" className="icon-btn" onClick={() => setCollapsed((v) => !v)}>
+            <FiMenu />
+          </button>
+          <NavLink to="/home" className="brand-link">
+            <h2 className="brand">DICOM-AI</h2>
+          </NavLink>
+          <button
+            type="button"
+            className="mobile-close-btn"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <FiX />
+          </button>
+        </div>
         <nav>
-          {navItems.map(({ to, label, icon: Icon }) => (
-            <NavLink key={to} to={to} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-              <Icon /> <span>{label}</span>
-            </NavLink>
-          ))}
+          {navItems.map(({ to, label, icon: Icon }) => {
+            const target = authed ? to : '/login?intent=signin';
+            return (
+              <NavLink
+                key={to}
+                to={target}
+                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Icon /> <span>{label}</span>
+              </NavLink>
+            );
+          })}
         </nav>
         {authed && (
           <div className="sidebar-footer">
@@ -59,6 +78,14 @@ function AppLayout() {
           </div>
         )}
       </aside>
+      <button
+        type="button"
+        className="mobile-hamburger-btn"
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      >
+        <FiMenu size={24} />
+      </button>
+      {mobileMenuOpen && <div className="mobile-menu-overlay" onClick={() => setMobileMenuOpen(false)} />}
       <section className="content-area">
         <div className="page-shell">
           <Outlet />
