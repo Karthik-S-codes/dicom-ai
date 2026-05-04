@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-05-04T16:39:56.320747Z
+Patient ID: PATIENT_121
+Scan Type: CT
+Transfer Status: FAILED
+Latency: 583.05 ms
+Retry Count: 0
+Risk Level: HIGH_RISK
+Diagnosis: Brain tumor detected
+Model Confidence: 93.20%
+
+Detection Coordinates: x=264, y=218, w=166, h=139
+
+AI Interpretation: AI model highlighted regions suggestive of brain tumor detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Intracranial lesion pattern observed. Urgent specialist review advised.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

@@ -26,6 +26,14 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 * {
   transition: background-color 0.28s ease, color 0.28s ease, border-color 0.28s ease,
     box-shadow 0.28s ease, transform 0.28s ease, opacity 0.28s ease;
@@ -48,6 +56,34 @@ body {
     radial-gradient(circle at 85% 10%, rgba(29, 78, 216, 0.08), transparent 40%),
     var(--bg);
   color: var(--text);
+}
+
+img,
+canvas,
+svg,
+video {
+  max-width: 100%;
+}
+
+main,
+.layout,
+.content-area,
+.page-shell,
+.panel,
+.study-main-viewer {
+  min-width: 0;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+th,
+td {
+  overflow-wrap: anywhere;
 }
 
 .page-shell {
@@ -916,8 +952,16 @@ button:disabled {
   100% { background-position: 220% 50%; }
 }
 
-.table-wrap { overflow: auto; }
-table { width: 100%; border-collapse: collapse; }
+.table-wrap {
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+}
 th, td { border-bottom: 1px solid var(--line); padding: 0.6rem; text-align: left; }
 
 .highlight-image {
@@ -1504,6 +1548,7 @@ th, td { border-bottom: 1px solid var(--line); padding: 0.6rem; text-align: left
 
   table {
     font-size: 0.85rem;
+    min-width: 560px;
   }
 
   .highlight-image {
@@ -1713,6 +1758,10 @@ th, td { border-bottom: 1px solid var(--line); padding: 0.6rem; text-align: left
 
   .table-wrap {
     border-radius: 8px;
+  }
+
+  table {
+    min-width: 520px;
   }
 
   .report-chip {

@@ -13,11 +13,43 @@ const PYTHON_SERVICES_DIR = path.join(ROOT_DIR, 'python-services');
 const DATA_DIR = path.join(ROOT_DIR, 'data');
 const DATASET_DIR = path.join(ROOT_DIR, 'dataset');
 
-const DEFAULT_PYTHON_EXECUTABLE = process.platform === 'win32'
-  ? path.join(ROOT_DIR, '.venv', 'Scripts', 'python.exe')
-  : 'python3';
+function looksLikeFilePath(value) {
+  return String(value || '').includes('/') || String(value || '').includes('\\') || path.isAbsolute(String(value || ''));
+}
 
-const PYTHON_EXECUTABLE = process.env.PYTHON_EXECUTABLE || DEFAULT_PYTHON_EXECUTABLE;
+function resolvePythonExecutable() {
+  const configured = process.env.PYTHON_EXECUTABLE;
+  const candidates = [];
+
+  if (configured) {
+    candidates.push(configured);
+  }
+
+  if (process.platform === 'win32') {
+    candidates.push(path.join(ROOT_DIR, '.venv', 'Scripts', 'python.exe'));
+    candidates.push(path.join(ROOT_DIR, 'venv', 'Scripts', 'python.exe'));
+    candidates.push('python');
+  } else {
+    candidates.push(path.join(ROOT_DIR, '.venv', 'bin', 'python'));
+    candidates.push(path.join(ROOT_DIR, 'venv', 'bin', 'python'));
+    candidates.push('python3');
+    candidates.push('python');
+  }
+
+  for (const candidate of candidates) {
+    if (!candidate) continue;
+    if (!looksLikeFilePath(candidate)) {
+      return candidate;
+    }
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+
+  return process.platform === 'win32' ? 'python' : 'python3';
+}
+
+const PYTHON_EXECUTABLE = resolvePythonExecutable();
 const PYTHON_RETRY_LIMIT = Number(process.env.PYTHON_RETRY_LIMIT || 2);
 const PYTHON_RETRY_DELAY_MS = Number(process.env.PYTHON_RETRY_DELAY_MS || 1500);
 
@@ -392,8 +424,8 @@ async function runSimulationPipeline(options = {}) {
   const resolvedPacsPath = firstExistingPath([
     expectedPacsPath,
     legacyScansPath,
-    transfer.status === 'SUCCESS' ? generated.dicom_path : ''
-  ]) || expectedPacsPath;
+    generated.dicom_path
+  ]) || generated.dicom_path;
 
   const analysis = await runStage('analyze-scan', () => runPythonWithRetry('disease_detection.py', [
     '--dicom',
@@ -602,8 +634,8 @@ const startTransfer = async (req, res) => {
     const resolvedPacsPath = firstExistingPath([
       expectedPacsPath,
       legacyScansPath,
-      transfer.status === 'SUCCESS' ? dicomPath : ''
-    ]) || expectedPacsPath;
+      dicomPath
+    ]) || dicomPath;
 
     WORKFLOW.transfer = transfer;
     WORKFLOW.pacsPath = resolvedPacsPath;

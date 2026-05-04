@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-05-04T16:38:15.995068Z
+Patient ID: PATIENT_327
+Scan Type: MRI
+Transfer Status: SUCCESS
+Latency: 1744.71 ms
+Retry Count: 1
+Risk Level: HIGH_RISK
+Diagnosis: Alzheimer pattern detected
+Model Confidence: 83.40%
+
+Detection Coordinates: x=357, y=337, w=107, h=133
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for Alzheimer pattern detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Neurodegenerative pattern observed. Neurology consultation advised.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

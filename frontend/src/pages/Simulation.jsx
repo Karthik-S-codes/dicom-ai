@@ -89,7 +89,10 @@ function Simulation() {
       await animateStageTo(8, 420);
       setResult(response);
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Failed to run simulation pipeline');
+      const stage = err.response?.data?.stage ? ` [stage: ${err.response.data.stage}]` : '';
+      const details = err.response?.data?.error ? ` - ${err.response.data.error}` : '';
+      const message = err.response?.data?.message || err.message || 'Failed to run simulation pipeline';
+      setError(`${message}${stage}${details}`);
     } finally {
       clearStageTimer();
       setIsPipelineRunning(false);
