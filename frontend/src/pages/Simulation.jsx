@@ -58,7 +58,7 @@ function Simulation() {
     clearStageTimer();
   }, []);
 
-  const animateStageTo = async (targetStage, delayMs = 480) => {
+  const animateStageTo = async (targetStage, delayMs = 180) => {
     while (!isCancelledRef.current && currentStageRef.current < targetStage) {
       await sleep(delayMs);
       if (isCancelledRef.current) break;
@@ -78,7 +78,7 @@ function Simulation() {
       const progressRunner = (async () => {
         while (!isCancelledRef.current) {
           if (currentStageRef.current >= 7) break;
-          await sleep(760);
+          await sleep(180);
           if (isCancelledRef.current) break;
           setCurrentStage((prev) => Math.min(prev + 1, 7));
         }
@@ -86,7 +86,7 @@ function Simulation() {
 
       const response = await startSimulation();
       await progressRunner;
-      await animateStageTo(8, 420);
+      await animateStageTo(8, 180);
       setResult(response);
     } catch (err) {
       const stage = err.response?.data?.stage ? ` [stage: ${err.response.data.stage}]` : '';

@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-05-05T14:07:55.954872Z
+Patient ID: PATIENT_647
+Scan Type: CT
+Transfer Status: SUCCESS
+Latency: 1231.27 ms
+Retry Count: 1
+Risk Level: HIGH_RISK
+Diagnosis: Possible stroke region
+Model Confidence: 93.76%
+
+Detection Coordinates: x=132, y=273, w=107, h=116
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for Possible stroke region.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Perfusion asymmetry pattern observed. Immediate neuro review advised.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.

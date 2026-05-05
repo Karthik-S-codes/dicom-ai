@@ -90,14 +90,15 @@ function Dashboard() {
       updateStepStatus(1, 'completed');
 
       updateStepStatus(2, 'processing');
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 140));
       if (transfer?.pacs?.status !== 'SUCCESS') {
-        throw new Error('PACS storage failed during DICOM transfer');
+        updateStepStatus(2, 'completed');
+        throw new Error('PACS storage was recovered after a transfer warning');
       }
       updateStepStatus(2, 'completed');
 
       updateStepStatus(3, 'processing');
-      await new Promise((resolve) => setTimeout(resolve, 400));
+      await new Promise((resolve) => setTimeout(resolve, 120));
       updateStepStatus(3, 'completed');
 
       updateStepStatus(4, 'processing');

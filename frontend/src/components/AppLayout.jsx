@@ -29,6 +29,7 @@ function AppLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const authed = isAuthenticated();
+  const toggleMobileMenu = () => setMobileMenuOpen((value) => !value);
 
   return (
     <div className={`layout ${collapsed ? 'collapsed' : ''} ${mobileMenuOpen ? 'mobile-menu-open' : ''}`}>
@@ -40,15 +41,11 @@ function AppLayout() {
           <NavLink to="/home" className="brand-link">
             <h2 className="brand">DICOM-AI</h2>
           </NavLink>
-          <button
-            type="button"
-            className="mobile-close-btn"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <FiX />
+          <button type="button" className="mobile-close-btn" onClick={toggleMobileMenu} aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}>
+            {mobileMenuOpen ? <FiX /> : <FiMenu />}
           </button>
         </div>
-        <nav>
+        <nav id="app-sidebar-nav">
           {navItems.map(({ to, label, icon: Icon }) => {
             const target = authed ? to : '/login?intent=signin';
             return (
@@ -81,9 +78,12 @@ function AppLayout() {
       <button
         type="button"
         className="mobile-hamburger-btn"
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={mobileMenuOpen}
+        aria-controls="app-sidebar-nav"
+        onClick={toggleMobileMenu}
       >
-        <FiMenu size={24} />
+        {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
       </button>
       {mobileMenuOpen && <div className="mobile-menu-overlay" onClick={() => setMobileMenuOpen(false)} />}
       <section className="content-area">

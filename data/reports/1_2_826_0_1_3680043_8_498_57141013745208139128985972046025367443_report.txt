@@ -1,0 +1,17 @@
+DICOM-AI Structured Medical Report
+Generated: 2026-05-05T15:21:56.134485Z
+Patient ID: PATIENT_900
+Scan Type: CT
+Transfer Status: SUCCESS
+Latency: 1495.65 ms
+Retry Count: 1
+Risk Level: HIGH_RISK
+Diagnosis: Brain tumor detected
+Model Confidence: 89.73%
+
+Detection Coordinates: x=229, y=13, w=133, h=139
+
+AI Interpretation: OpenCV heatmap + highlighted region generated for Brain tumor detected.
+Impression: Classification suggests clinically relevant abnormal findings.
+Recommendation: Intracranial lesion pattern observed. Urgent specialist review advised.
+Note: This is an AI-assisted triage output and not a definitive diagnosis.
